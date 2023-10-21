@@ -6,6 +6,7 @@
 # for your implementation
 # declare -a packages=()
 
+# Omar
 # TODO: define a function to handle errors
 # This funtion accepts two parameters one as the error message and one as the command to be excecuted when error occurs.
 function handle_error() {
@@ -15,7 +16,8 @@ function handle_error() {
    # TODO Display error and return an exit code
    
 }
- 
+
+# Omar
 # Function to solve dependencies
 function setup() {
     # Do not remove next line!
@@ -36,6 +38,7 @@ function setup() {
 
 }
 
+# Guus
 # Function to install a package from a URL
 # TODO assign the required parameter needed for the logic
 # complete the implementation of the following function.
@@ -67,6 +70,7 @@ function install_package() {
 
 }
 
+# Omar
 function rollback_nosecrets() {
     # Do not remove next line!
     echo "function rollback_nosecrets"
@@ -74,6 +78,7 @@ function rollback_nosecrets() {
     # TODO rollback intermiediate steps when installation fails
 }
 
+# Guus
 function rollback_pywebserver() {
     # Do not remove next line!
     echo "function rollback_pywebserver"
@@ -81,6 +86,7 @@ function rollback_pywebserver() {
     # TODO rollback intermiediate steps when installation fails
 }
 
+# Omar
 function test_nosecrets() {
     # Do not remove next line!
     echo "function test_nosecrets"
@@ -90,6 +96,7 @@ function test_nosecrets() {
 
 }
 
+# Guus
 function test_pywebserver() {
     # Do not remove next line!
     echo "function test_pywebserver"    
@@ -101,6 +108,7 @@ function test_pywebserver() {
 
 }
 
+# Omar
 function uninstall_nosecrets() {
     # Do not remove next line!
     echo "function uninstall_nosecrets"  
@@ -108,11 +116,13 @@ function uninstall_nosecrets() {
     #TODO uninstall nosecrets application
 }
 
+# Guus
 function uninstall_pywebserver() {
     echo "function uninstall_pywebserver"    
     #TODO uninstall pywebserver application
 }
 
+# Omar
 #TODO removing installed dependency during setup() and restoring the folder structure to original state
 function remove() {
     # Do not remove next line!
@@ -122,6 +132,7 @@ function remove() {
 
 }
 
+# Guus
 function main() {
     # Do not remove next line!
     echo "function main"
