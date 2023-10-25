@@ -141,7 +141,7 @@ function install_package() {
             echo "file = $f"
             ext=${f: -2}
             echo "ext = $ext"
-            if [ $ext == ".h" || $ext == ".c" ]; then
+            if [ $ext == ".h" ] || [ $ext == ".c" ]; then
                 mv $f "src/$f"
             fi
         done
