@@ -138,11 +138,10 @@ function install_package() {
         echo "Moving all source files to ./src"
         mkdir src
         for f in *; do
-            echo "file = $f"
             ext=${f: -2}
-            echo "ext = $ext"
             if [ $ext == ".h" ] || [ $ext == ".c" ]; then
                 mv $f "src/$f"
+                echo "Moved $f"
             fi
         done
 
