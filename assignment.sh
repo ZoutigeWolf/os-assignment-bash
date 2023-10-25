@@ -84,9 +84,9 @@ function install_package() {
         handle_error "Invalid number of arguments"
     fi
 
-    package_name = $1
-    package_url = $2
-    install_dir = $3
+    package_name=$1
+    package_url=$2
+    install_dir=$3
 
     # TODO:  The logic for downloading from a URL and unizpping the downloaded files of different applications must be generic
 
