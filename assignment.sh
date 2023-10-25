@@ -135,6 +135,15 @@ function install_package() {
         echo "Running nosecrets extra installation steps"
         cd "$install_dir/$package_name"
 
+        echo "Moving all source files to ./src"
+        mkdir src
+        for f in "./*"; do
+            ext=${$f: -2}
+            if [$ext == ".h" || $ext == ".c"]; then
+                mv $f "src/$f"
+            fi
+        done
+
         if ! make nms >/dev/null 2>&1; then
             handle_error "Failed to make nms"
         fi
