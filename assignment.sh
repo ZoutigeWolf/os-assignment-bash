@@ -139,7 +139,8 @@ function install_package() {
         mkdir src
         for f in "./*"; do
             ext=${f: -2}
-            if [$ext == ".h" || $ext == ".c"]; then
+            echo "ext = $ext"
+            if [ $ext == ".h" || $ext == ".c" ]; then
                 mv $f "src/$f"
             fi
         done
