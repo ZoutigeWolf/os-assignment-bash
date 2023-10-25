@@ -145,10 +145,12 @@ function install_package() {
             fi
         done
 
+        echo "Making..."
         if ! make nms >/dev/null 2>&1; then
             handle_error "Failed to make nms"
         fi
 
+        echo "Installing..."
         if ! sudo make install >/dev/null 2>&1; then
             handle_error "Failed to install"
         fi
