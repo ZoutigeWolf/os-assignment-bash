@@ -231,6 +231,10 @@ function main() {
     # TODO: 
     # Read global variables from configfile
 
+    . dev.conf
+
+    echo $WEBSERVER_PORT
+
     # Get arguments from the commandline
     # Check if the first argument is valid
     # allowed values are "setup" "nosecrets" "pywebserver" "remove"
@@ -248,6 +252,4 @@ function main() {
 }
 
 # Pass commandline arguments to function main
-# main "$@"
-install_package "webserver" "https://github.com/nickjj/webserver/archive/refs/heads/master.zip" "./apps"
-install_package "nosecrets" "https://github.com/bartobri/no-more-secrets/archive/refs/heads/master.zip" "./apps"
+main "$@"
