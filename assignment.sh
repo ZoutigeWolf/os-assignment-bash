@@ -240,7 +240,7 @@ function main() {
     # Get arguments from the commandline
     # Check if the first argument is valid
     # allowed values are "setup" "nosecrets" "pywebserver" "remove"
-    if [ $1 == {setup,nosecrets,pywebserver,remove}]; then
+    if [ $1 == {setup,nosecrets,pywebserver,remove} ]; then
         echo "yes"
     fi
 
