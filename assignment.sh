@@ -240,11 +240,8 @@ function main() {
     # Get arguments from the commandline
     # Check if the first argument is valid
     # allowed values are "setup" "nosecrets" "pywebserver" "remove"
-    if [[ "$1" == "setup" || "$1" == "nosecrets" || "$1" == "pywebserver" || "$1" == "remove" ]]; then
-        echo "yes"
-    fi
-
     # bash must exit if value does not match one of those values
+
     # Check if the second argument is provided on the command line
     # Check if the second argument is valid
     # allowed values are "--install" "--uninstall" "--test"
@@ -255,6 +252,37 @@ function main() {
     # excute the function check_dependency and provide necessary arguments
     # expected arguments are the installation directory specified in dev.conf
 
+    if [[ "$1" != "setup" && "$1" != "nosecrets" && "$1" != "pywebserver" && "$1" != "remove" ]]; then
+        handle_error "Invalid command: $1"
+    fi
+
+    if [ $1 == "setup" ]; then
+        setup
+    elif [ $1 == "remove" ]; then
+        remove
+    elif [ $1 == "nosecrets"]; then
+        if [ $2 == "--install" ]; then
+            install_package nosecrets $APP1_URL $INSTALL_DIR
+        elif [ $2 == "--uninstall" ]; then
+            uninstall_nosecrets
+        elif [ $2 == "--test" ]; then
+            test_nosecrets
+        else
+            handle_error "Invalid option: $2"
+        fi
+    elif [ $1 == "pywebserver" ]; then
+        if [ $2 == "--install" ]; then
+            install_package pywebserver $APP2_URL $INSTALL_DIR
+        elif [ $2 == "--uninstall" ]; then
+            uninstall_pywebserver
+        elif [ $2 == "--test" ]; then
+            test_pywebserver $WEBSERVER_IP $WEBSERVER_PORT
+        else
+            handle_error "Invalid option: $2"
+        fi
+    else
+        handle_error "Invalid command: $1"
+    fi
 }
 
 # Pass commandline arguments to function main
