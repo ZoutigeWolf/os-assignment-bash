@@ -260,7 +260,7 @@ function main() {
         setup
     elif [ $1 == "remove" ]; then
         remove
-    elif [ $1 == "nosecrets"]; then
+    elif [ $1 == "nosecrets" ]; then
         if [ $2 == "--install" ]; then
             install_package nosecrets $APP1_URL $INSTALL_DIR
         elif [ $2 == "--uninstall" ]; then
