@@ -231,13 +231,19 @@ function main() {
     # TODO: 
     # Read global variables from configfile
 
-    . dev.conf
+    if [ ! -e dev.conf ]; then
+        handle_error "dev.conf not found"
+    fi
 
-    echo $WEBSERVER_PORT
+    . dev.conf
 
     # Get arguments from the commandline
     # Check if the first argument is valid
     # allowed values are "setup" "nosecrets" "pywebserver" "remove"
+    if [ $1 == {setup,nosecrets,pywebserver,remove}]; then
+        echo "yes"
+    fi
+
     # bash must exit if value does not match one of those values
     # Check if the second argument is provided on the command line
     # Check if the second argument is valid
