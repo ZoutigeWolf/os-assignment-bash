@@ -240,7 +240,7 @@ function main() {
     # Get arguments from the commandline
     # Check if the first argument is valid
     # allowed values are "setup" "nosecrets" "pywebserver" "remove"
-    if [[ " ${("setup" "nosecrets" "pywebserver" "remove")[@]} " =~ " $1 " ]]; then
+    if [[ "$1" == "setup" || "$1" == "nosecrets" || "$1" == "pywebserver" || "$1" == "remove" ]]; then
         echo "yes"
     fi
 
