@@ -100,7 +100,7 @@ function install_package() {
     # TODO:  check if the application-folder and the url of the dependency exist
     echo "Validating install dir..."
     if [ ! -d $install_dir ]; then
-        handle_error "Install dir not found"
+        mkdir $install_dir
     fi
 
     echo "Validating package URL..."
