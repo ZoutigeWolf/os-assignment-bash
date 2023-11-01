@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Team:
+# Guus - 1045891
+# Omar - 
+
 # Define global variable here
 
 # TODO: : Add required and additional packagenas dependecies 
@@ -118,11 +122,12 @@ function install_package() {
     if ! wget -O "$package_name.zip" $package_url; then
         handle_error "Failed to download package"
     fi
-
+   
     # TODO:  extract the package to the installation folder and store it into a dedicated folder
     # If a problem occur during the this proces use the function handle_error() to print a messgage and handle the error
     echo "Unzipping files..."
     if ! unzip -j "$package_name.zip" -d "$install_dir/$package_name"; then
+        "rollback_$package_name" $install_dir
         handle_error "Failed to unzip package"
     fi
 
@@ -176,7 +181,15 @@ function rollback_pywebserver() {
     echo "function rollback_pywebserver"
 
     # TODO:  rollback intermiediate steps when installation fails
+    if [ -d "$1/pywebserver" ]; then
+        rm -rf "$1/pywebserver"
+    fi
 
+    if [ -e pywebserver.zip ]; then
+        rm pywebserver.zip
+    fi
+
+    echo "Rolled back pywebserver"
 }
 
 # Omar
@@ -192,13 +205,52 @@ function test_nosecrets() {
 # Guus
 function test_pywebserver() {
     # Do not remove next line!
-    echo "function test_pywebserver"    
+    echo "function test_pywebserver"
+
+    host="$2:$3"
 
     # TODO:  test the webserver
     # server and port number must be extracted from config.conf
-    # test data must be read from test.json  
-    # kill this webserver process after it has finished its job
+    if [ ! -e "$1/pywebserver/webserver" ]; then
+        handle_error "pywebserver executable not found"
+    fi
 
+    "./$1/pywebserver/webserver" $host &
+    pid=$!
+
+    echo "Started pywebserver on $host with PID: $pid"
+
+    # test data must be read from test.json
+    data=$(<test.json)
+
+    echo "Sending test request to server..."
+
+    max_tries=10
+    failed=false
+
+    for ((i = 1; i <= max_tries; i++)); do
+        res=$(curl -s -X POST "http://localhost:$3" -d "$data")
+
+        last=$(echo $res | tail -n 1)
+
+        if [[ $last == $data ]]; then
+            echo "Successfully received response from the server"
+            break
+        fi
+
+        if [ $i == $max_tries ]; then
+            failed=true
+        fi
+    done
+
+    if [ $failed == true ]; then
+        handle_error "Failed to connect to webserver"
+    fi
+
+    # kill this webserver process after it has finished its job
+    kill $pid
+
+    echo "Pywebserver works as intended"
 }
 
 # Omar
@@ -211,8 +263,15 @@ function uninstall_nosecrets() {
 
 # Guus
 function uninstall_pywebserver() {
-    echo "function uninstall_pywebserver"    
+    # Do not remove next line!
+    echo "function uninstall_pywebserver"
+
     #TODO:  uninstall pywebserver application
+    if [ -d "$1/pywebserver" ]; then
+        rm -rf "$1/pywebserver"
+    fi
+
+    echo "Uninstalled pywebserver"
 }
 
 # Omar
@@ -266,9 +325,9 @@ function main() {
         if [ $2 == "--install" ]; then
             install_package nosecrets $APP1_URL $INSTALL_DIR
         elif [ $2 == "--uninstall" ]; then
-            uninstall_nosecrets
+            uninstall_nosecrets $INSTALL_DIR
         elif [ $2 == "--test" ]; then
-            test_nosecrets
+            test_nosecrets $INSTALL_DIR
         else
             handle_error "Invalid option: $2"
         fi
@@ -276,9 +335,9 @@ function main() {
         if [ $2 == "--install" ]; then
             install_package pywebserver $APP2_URL $INSTALL_DIR
         elif [ $2 == "--uninstall" ]; then
-            uninstall_pywebserver
+            uninstall_pywebserver $INSTALL_DIR
         elif [ $2 == "--test" ]; then
-            test_pywebserver $WEBSERVER_IP $WEBSERVER_PORT
+            test_pywebserver $INSTALL_DIR $WEBSERVER_IP $WEBSERVER_PORT
         else
             handle_error "Invalid option: $2"
         fi
