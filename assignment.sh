@@ -155,6 +155,7 @@ function install_package() {
             handle_error "Failed to install"
         fi
 
+        cd ../..
         echo "Extra installation steps completed"
     fi
 
@@ -175,6 +176,7 @@ function rollback_pywebserver() {
     echo "function rollback_pywebserver"
 
     # TODO:  rollback intermiediate steps when installation fails
+
 }
 
 # Omar
