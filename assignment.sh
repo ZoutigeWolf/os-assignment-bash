@@ -126,7 +126,7 @@ function install_package() {
     # TODO:  extract the package to the installation folder and store it into a dedicated folder
     # If a problem occur during the this proces use the function handle_error() to print a messgage and handle the error
     echo "Unzipping files..."
-    if ! unzip -j "$package_name.zip" -d "$install_dir/$package_name" >/dev/null 2>&1; then
+    if ! unzip -j "$package_name.zip" -d "$install_dir/$package_name"; then
         handle_error "Failed to unzip package"
     fi
 
