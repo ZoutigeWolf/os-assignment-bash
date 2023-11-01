@@ -33,7 +33,7 @@ function setup() {
     echo "Checking dependencies..."
     dependencies=("unzip" "wget" "curl")
     for dependency in "${dependencies[@]}"; do
-        if ! command -v "$dependency" >/dev/null 2>&1; then
+        if ! command -v "$dependency"; then
             echo "$dependency is not installed, installing..."
 
             # Install dependency
@@ -104,7 +104,7 @@ function install_package() {
     fi
 
     echo "Validating package URL..."
-    if ! wget -q --method=HEAD $package_url >/dev/null 2>&1; then
+    if ! wget -q --method=HEAD $package_url; then
         handle_error "Package URL is invalid"
     fi
 
@@ -115,14 +115,14 @@ function install_package() {
     # TODO:  Download and unzip the package
     # if a a problem occur during the this proces use the function handle_error() to print a messgage and handle the error
     echo "Downloading package..."
-    if ! wget -O "$package_name.zip" $package_url >/dev/null 2>&1; then
+    if ! wget -O "$package_name.zip" $package_url; then
         handle_error "Failed to download package"
     fi
 
     # TODO:  extract the package to the installation folder and store it into a dedicated folder
     # If a problem occur during the this proces use the function handle_error() to print a messgage and handle the error
     echo "Unzipping files..."
-    if ! unzip -j "$package_name.zip" -d "$install_dir/$package_name" >/dev/null 2>&1; then
+    if ! unzip -j "$package_name.zip" -d "$install_dir/$package_name"; then
         handle_error "Failed to unzip package"
     fi
 
@@ -146,12 +146,12 @@ function install_package() {
         done
 
         echo "Making..."
-        if ! make nms >/dev/null 2>&1; then
+        if ! make nms; then
             handle_error "Failed to make nms"
         fi
 
         echo "Installing..."
-        if ! sudo make install >/dev/null 2>&1; then
+        if ! sudo make install; then
             handle_error "Failed to install"
         fi
 
