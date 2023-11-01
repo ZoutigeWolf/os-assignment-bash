@@ -2,7 +2,7 @@
 
 # Team:
 # Guus - 1045891
-# Omar - 
+# Omar - 1058647
 
 # Define global variable here
 
@@ -127,6 +127,7 @@ function install_package() {
     # If a problem occur during the this proces use the function handle_error() to print a messgage and handle the error
     echo "Unzipping files..."
     if ! unzip -j "$package_name.zip" -d "$install_dir/$package_name"; then
+        "rollback_$package_name" $install_dir
         handle_error "Failed to unzip package"
     fi
 
@@ -172,6 +173,15 @@ function rollback_nosecrets() {
     echo "function rollback_nosecrets"
 
     # TODO:  rollback intermiediate steps when installation fails
+    if [ -d "$1/nosecrets" ]; then
+        rm -rf "$1/nosecrets"
+    fi
+
+    if [ -e nosecrets.zip ]; then
+        rm nosecrets.zip
+    fi
+
+    echo "Rolled back nosecrets"
 }
 
 # Guus
@@ -197,7 +207,15 @@ function test_nosecrets() {
     echo "function test_nosecrets"
 
     # TODO:  test nosecrets
-    # kill this webserver process after it has finished its job
+     echo "Running 'ls -l | nms'..."
+    ls -l | nms
+
+    # Check the exit status of the command
+    if [ $? -eq 0 ]; then
+        echo "Test passed."
+    else
+        handle_error "Test failed."
+    fi
 
 }
 
@@ -258,6 +276,14 @@ function uninstall_nosecrets() {
     echo "function uninstall_nosecrets"  
 
     #TODO:  uninstall nosecrets application
+    if [ -d "$1/nosecrets" ]; then
+        cd "apps/nosecrets"
+        sudo make uninstall
+        cd ../..
+        rm -rf "$1/nosecrets"
+    fi
+
+    echo "Uninstalled nosecrets"
 }
 
 # Guus
@@ -280,7 +306,23 @@ function remove() {
     echo "function remove"
 
     # Remove each package that was installed during setup
+    echo "Removing dependencies..."
+    dependencies=("unzip" "wget" "curl")
+    for dependency in "${dependencies[@]}"; do
+        if command -v "$dependency"; then
+            echo "Uninstalling $dependency..."
+            sudo apt-get remove -y "$dependency"
+        fi
+    done
 
+    # Remove the directories and files that were created during setup
+    echo "Removing directories and files..."
+    if [ -d ~/apps ]; then
+        echo "Removing ~/apps directory..."
+        rm -rf ~/apps
+    fi
+
+    echo "Process complete"
 }
 
 # Guus
