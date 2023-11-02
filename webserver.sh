@@ -305,7 +305,7 @@ function remove() {
     # Do not remove next line!
     echo "function remove"
 
-    if [ -d "$INSTALL_DIR/nosecrets" || -d "$INSTALL_DIR/pywebserver"]; then
+    if [ -d "$INSTALL_DIR/nosecrets" ] || [ -d "$INSTALL_DIR/pywebserver" ]; then
         handle_error "Uninstall the apps first before removing dependecies"
     fi
 
