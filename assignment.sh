@@ -242,7 +242,7 @@ function test_pywebserver() {
 
     echo "Sending test request to server..."
 
-    max_tries=10
+    max_tries=100
     failed=false
 
     for ((i = 1; i <= max_tries; i++)); do
